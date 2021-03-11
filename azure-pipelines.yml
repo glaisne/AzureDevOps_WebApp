@@ -5,10 +5,16 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: AzurePowerShell@5
+
+- task: AzureResourceManagerTemplateDeployment@3
   inputs:
-    azureSubscription: 'PayAsYouGoServiceConnection'
-    ScriptType: 'FilePath'
-    ScriptPath: './Deploy-AzTemplate.ps1'
-    ScriptArguments: -Location 'centralus' -ResourceGroupName 'demogroup' -TemplateFile templates\mainTemplate.json
-    azurePowerShellVersion: 'LatestVersion'
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'PayAsYouGoServiceConnection'
+    subscriptionId: 'd9cd4c0d-292c-42e8-9f30-347d1f845e1b'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'AzDevOps_WebApp'
+    location: 'East US 2'
+    templateLocation: 'Linked artifact'
+    csmFile: './azure.deploy.json'
+    csmParametersFile: './azure.parameters.json'
+    deploymentMode: 'Incremental'
